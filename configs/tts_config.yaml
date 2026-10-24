@@ -1,0 +1,8 @@
+model_name: "tts-model"
+train_batch_size: 4
+eval_batch_size: 2
+learning_rate: 1e-4
+max_epochs: 30
+save_dir: "models/tts"
+output_sampling_rate: 22050
+language: "bm"

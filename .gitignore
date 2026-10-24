@@ -1,0 +1,29 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*.so
+
+# Virtual environment
+.venv/
+venv/
+ENV/
+
+# IDE/editor
+.vscode/
+.idea/
+
+# Data and model artifacts
+*.wav
+*.mp3
+*.flac
+*.pt
+*.bin
+*.ckpt
+*.log
+
+# Notebook checkpoints
+.ipynb_checkpoints/
+
+# OS generated files
+.DS_Store
+Thumbs.db

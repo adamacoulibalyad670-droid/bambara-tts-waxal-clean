@@ -1,0 +1,3 @@
+text,audio_path,speaker_id,language
+"Aw ka se ka baara duman min ye?","data/audio/train/001.wav","speaker_01","bm"
+"Mali ka dunya ye ka bila?","data/audio/train/002.wav","speaker_01","bm"

@@ -1,0 +1,2 @@
+text,audio_path,speaker_id,language
+"Ka bana ye?","data/audio/test/001.wav","speaker_01","bm"
