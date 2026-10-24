@@ -5,3 +5,4 @@ learning_rate: 5e-5
 max_epochs: 20
 save_dir: "models/asr"
 language: "bm"
+use_mixed_precision: true

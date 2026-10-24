@@ -1,24 +1,17 @@
 # Data directory
 
-This folder is where you place:
-- raw audio files
-- transcripts
-- manifest CSV files
-- processed features
+This folder is intended for Bambara speech data.
+Place your raw audio files under `data/audio/train`, `data/audio/val`, and `data/audio/test`.
+Each audio file should have a matching transcript in text form.
 
-Example structure:
+Example transcript file structure:
 
 ```text
-data/
-├── audio/
-│   ├── train/
-│   └── val/
-├── transcripts/
-│   ├── train.txt
-│   └── val.txt
-├── train_manifest.csv
-├── test_manifest.csv
-└── processed/
+data/transcripts/train.txt
+# Each line: <relative_audio_path> <transcript>
+
+train/001.wav Aw ka se ka baara duman min ye?
+train/002.wav Mali la denw ka caya.
 ```
 
-For Bambara work, make sure the text is normalized and cleaned before model training.
+The project then creates manifest CSV files for training and evaluation.

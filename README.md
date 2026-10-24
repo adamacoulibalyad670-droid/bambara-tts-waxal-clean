@@ -1,13 +1,14 @@
 # Bambara Speech AI
 
-This repository is a starter project for Bambara speech processing tasks, including:
-- TTS (text-to-speech)
-- ASR (automatic speech recognition)
-- dataset preprocessing for Bambara audio/text corpora
+A practical starter project for Bambara speech processing with:
+- TTS (Text-to-Speech)
+- ASR (Automatic Speech Recognition)
+- data preprocessing and manifest generation
+- model training and inference entry points
 
-The project is designed to be extended with real Bambara datasets, GPU training, and model deployment.
+This repository is designed to be extended with real Bambara datasets and then trained on GPU/Colab.
 
-## Structure
+## Repository structure
 
 ```text
 bambara-tts-waxal-clean/
@@ -15,12 +16,24 @@ bambara-tts-waxal-clean/
 ├── requirements.txt
 ├── .gitignore
 ├── data/
-│   ├── README.md
+│   ├── audio/
+│   │   ├── train/
+│   │   ├── val/
+│   │   └── test/
+│   ├── transcripts/
+│   │   ├── train.txt
+│   │   ├── val.txt
+│   │   └── test.txt
 │   ├── train_manifest.csv
-│   └── test_manifest.csv
+│   ├── val_manifest.csv
+│   ├── test_manifest.csv
+│   └── README.md
 ├── configs/
 │   ├── tts_config.yaml
 │   └── asr_config.yaml
+├── scripts/
+│   ├── build_manifest.py
+│   └── run_training.sh
 ├── src/
 │   ├── __init__.py
 │   ├── dataset.py
@@ -28,74 +41,111 @@ bambara-tts-waxal-clean/
 │   ├── train_tts.py
 │   ├── train_asr.py
 │   ├── infer_tts.py
-│   └── infer_asr.py
-└── models/
+│   ├── infer_asr.py
+│   └── utils.py
+├── notebooks/
+│   └── .gitkeep
+├── models/
+│   └── .gitkeep
+└── outputs/
     └── .gitkeep
 ```
 
-## Requirements
+## Quick start
 
-Python 3.10+
+1. Create a virtual environment
 
-Install dependencies:
+```bash
+python -m venv .venv
+source .venv/bin/activate  # Linux/macOS
+# or .venv\Scripts\activate  # Windows
+```
+
+2. Install dependencies
 
 ```bash
 pip install -r requirements.txt
 ```
 
-## Data format
+3. Prepare dataset
 
-Expected CSV manifest columns:
+Put WAV files in `data/audio/train` and corresponding transcripts in `data/transcripts/train.txt`.
 
-```csv
-text,audio_path,speaker_id,language
-"Saya ka denw ye" ,"data/audio/train/001.wav","speaker_01","bm"
+Example transcript file:
+
+```text
+Aw ka bonya ka baara di.
+Mali la denw ka caya.
 ```
 
-- `text`: transcription in Bambara
-- `audio_path`: path to WAV/MP3 audio file
-- `speaker_id`: optional speaker label
-- `language`: should be `bm`
+4. Build manifest files
 
-## Quickstart
+```bash
+python scripts/build_manifest.py \
+  --audio_dir data/audio/train \
+  --transcript_file data/transcripts/train.txt \
+  --output data/train_manifest.csv
+```
 
-1. Put your Bambara audio and transcripts in `data/`
-2. Create a manifest CSV using the format above
-3. Run preprocessing:
+5. Preprocess dataset
 
 ```bash
 python -m src.preprocess --manifest data/train_manifest.csv --output_dir data/processed
 ```
 
-4. Train TTS:
+6. Train TTS model
 
 ```bash
-python -m src.train_tts --config configs/tts_config.yaml
+python -m src.train_tts --config configs/tts_config.yaml --manifest data/train_manifest.csv
 ```
 
-5. Train ASR:
+7. Train ASR model
 
 ```bash
-python -m src.train_asr --config configs/asr_config.yaml
+python -m src.train_asr --config configs/asr_config.yaml --manifest data/train_manifest.csv
 ```
 
-6. Run inference:
+8. Run inference
 
 ```bash
 python -m src.infer_tts --text "Aw ka se ka baara duman min ye?"
-python -m src.infer_asr --audio_path data/test.wav
+python -m src.infer_asr --audio_path data/audio/test/example.wav
+```
+
+## Dataset schema
+
+The manifest CSV should contain columns similar to this:
+
+```csv
+text,audio_path,speaker_id,language
+"Aw ka denw ye","data/audio/train/001.wav","speaker_01","bm"
+"Mali la bagan ye","data/audio/train/002.wav","speaker_01","bm"
 ```
 
 ## Recommended models
 
-- TTS: XTTS-v2, Coqui TTS, VITS, FastSpeech2
-- ASR: Whisper fine-tuning, Wav2Vec2, MMS, HuBERT
+For Bambara speech tasks, good starting points are:
+
+- TTS:
+  - XTTS-v2
+  - Coqui TTS
+  - VITS
+  - FastSpeech2
+
+- ASR:
+  - Whisper fine-tuning
+  - Wav2Vec2
+  - MMS
+  - HuBERT
 
 ## Notes
 
-This is an initial project template. To reach production quality for Bambara speech,
-real annotated audio data, preprocessing cleanup, and GPU training are required.
+This repository is a strong starter project for Bambara speech research. To train a production-ready model, you will need:
+- a real Bambara dataset with audio + validated transcripts
+- cleaned text normalization
+- GPU or Colab with sufficient RAM and VRAM
+- careful validation and evaluation
 
 ## License
 
-This project is a starter template for experimentation and research.
+This project is released as a starter template for research, experimentation, and local development.

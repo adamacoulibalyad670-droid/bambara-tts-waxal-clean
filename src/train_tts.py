@@ -1,26 +1,29 @@
 import argparse
-import yaml
 from pathlib import Path
+import yaml
 
 
 def parse_args():
     parser = argparse.ArgumentParser(description="Train a Bambara TTS model")
-    parser.add_argument("--config", type=str, default="configs/tts_config.yaml")
-    parser.add_argument("--manifest", type=str, default="data/train_manifest.csv")
+    parser.add_argument("--config", type=str, default="configs/tts_config.yaml", help="TTS config file")
+    parser.add_argument("--manifest", type=str, default="data/train_manifest.csv", help="Training manifest CSV")
     return parser.parse_args()
 
 
 def main():
     args = parse_args()
-    config_path = Path(args.config)
-    with config_path.open("r", encoding="utf-8") as f:
-        config = yaml.safe_load(f)
+    cfg_path = Path(args.config)
+    if not cfg_path.exists():
+        raise FileNotFoundError(f"Config file not found: {cfg_path}")
 
-    print("TTS training config loaded:")
+    with cfg_path.open("r", encoding="utf-8") as f:
+        config = yaml.safe_load(f) or {}
+
+    print("TTS training configuration:")
     print(config)
     print(f"Manifest: {args.manifest}")
-    print("This is a starter TTS training template for Bambara speech.")
-    print("Replace this placeholder with your preferred TTS framework, e.g. XTTS, Coqui TTS, or VITS.")
+    print("This starter script prepares the training pipeline for Bambara TTS.")
+    print("Use a framework such as XTTS-v2, Coqui TTS, VITS, or FastSpeech2 for actual model training.")
 
 
 if __name__ == "__main__":

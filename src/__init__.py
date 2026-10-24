@@ -1,1 +1,1 @@
-# Project package marker
+# Package marker for src
